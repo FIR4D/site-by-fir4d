@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <style>
+        /* Добавьте стили для таблицы и кнопок */
+    </style>
+</head>
+<body>
+    <h2>Админ-панель</h2>
+    <table id="orders-table">
+        <thead>
+            <tr>
+                <th>Никнейм</th>
+                <th>Почта</th>
+                <th>Телеграм</th>
+                <th>Подробности</th>
+                <th>Продукт</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Заполнится заказами -->
+        </tbody>
+    </table>
+
+    <script>
+        fetch('/get-orders')
+            .then(response => response.json())
+            .then(orders => {
+                const tableBody = document.getElementById('orders-table').getElementsByTagName('tbody')[0];
+                orders.forEach(order => {
+                    let row = tableBody.insertRow();
+                    row.insertCell(0).innerText = order.nickname;
+                    row.insertCell(1).innerText = order.email;
+                    row.insertCell(2).innerText = order.telegram;
+                    row.insertCell(3).innerText = order.details;
+                    row.insertCell(4).innerText = order.productTitle;
+                    row.insertCell(5).innerText = order.status;
+                    row.insertCell(6).innerHTML = `
+                        <button onclick="confirmOrder(${order.id})">Подтвердить</button>
+                        <button onclick="cancelOrder(${order.id})">Отменить</button>
+                    `;
+                });
+            });
+
+        function confirmOrder(orderId) {
+            fetch(`/confirm-order/${orderId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Заказ подтвержден!');
+                    location.reload();
+                } else {
+                    alert('Ошибка подтверждения заказа.');
+                }
+            });
+        }
+
+        function cancelOrder(orderId) {
+            fetch(`/cancel-order/${orderId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Заказ отменен!');
+                    location.reload();
+                } else {
+                    alert('Ошибка отмены заказа.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

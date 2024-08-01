@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIR4D - Студия по созданию 4D | 5D скинов</title>
+    <meta name="description" content="FIR4D - создаем уникальные 4D|5D скины на заказ. Оплата после утверждения результата.">
+    <meta name="keywords" content="4D скины, 5D скины, уникальные скины, заказ скинов">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@300..700&display=swap">
+    <style>
+        /* Стили для видео-фона */
+        .video-background {
+            position: fixed; /* Закрепляем видео на фоне */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            object-fit: cover; /* Заполняет весь экран, сохраняя пропорции */
+            z-index: 0; /* Помещаем видео за весь контент */
+            filter: brightness(0.2) sepia(1) hue-rotate(-50deg) saturate(5); /* Применяем фильтр для перекраски в красные оттенки */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+        }
+
+        /* Ваши существующие стили */
+        #content {
+            position: relative;
+            z-index: 1; /* Контент будет выше видео */
+        }
+
+        .header-content, .order-button {
+            color: white; /* Цвет текста */
+        }
+    </style>
+</head>
+<body>
+    <!-- Добавляем видео-фон -->
+    <video id="background-video" class="video-background" autoplay muted loop>
+        <source src="bg.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <div id="particles-js"></div>
+    <div id="content">
+        <header>
+            <div class="header-content">
+                <h1>FIR4D - Студия по созданию 4D | 5D скинов</h1>
+                <p>Мы создаем уникальные скины на заказ. Оплата берём после утверждения результата.</p>
+                <button class="order-button" onclick="showOrderModal()">Заказать</button>
+            </div>
+        </header>
+
+        <main>
+        <section id="about">
+            <h2>Кто мы?</h2>
+            <ul class="about-list">
+                <li>Мы - студия FIR4D, ваш надежный проводник в мир уникальных скинов и дополнений к ним для Minecraft BE!</li>
+                <li>Мы не просто создаём скины — мы преображаем ваш игровой опыт, делая его незабываемым!</li>
+                </ul>
+            </section>
+        </main>
+
+        <section id="why">
+            <h2>Почему нужно выбрать FIR4D?</h2>
+            <ul class="why-list">
+                <li>Уникальные и качественные 4D и 5D скины и дополнения к ним, созданные специально для вашего персонажа.</li>
+                <li>Индивидуальный подход к каждому клиенту, включая советы по улучшению и кастомизации персонажа.</li>
+                <li>Бонусы и специальные предложения, которые делают каждую покупку более выгодной и приятной.</li>
+                <li>Качественное выполнение работ, с гарантией до тех пор, пока вы не будете полностью удовлетворены результатом.</li>
+            </ul>
+        </section>
+
+            <section id="gallery">
+                <h2>Примеры наших работ:</h2>
+                <p>Не обращайте внимания, скоро заменим на показ 5D функционала (Фото справа)</p>
+                <div class="gallery-container">
+                    <div class="gallery-item"><img src="images/work1.jpg" alt="Работа 1"></div>
+                    <div class="gallery-item"><img src="images/work2.jpg" alt="Работа 2"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <nav>
+                <ul>
+                    <li><a href="#services" onclick="showServices()">Услуги</a></li>
+                    <li><a href="#gallery" onclick="showGallery()">Галерея</a></li>
+                    <li><a href="#contact" onclick="showContact()">Контакты</a></li>
+                </ul>
+            </nav>
+        </footer>
+    </div>
+
+    <!-- Модальное окно выбора категории -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <div id="order-header">
+                <span>Выбор товара</span>
+                <button id="order-close-btn" onclick="closeOrderModal()">×</button>
+            </div>
+            <div id="order-content">
+                <div class="category" onclick="showCategory('4D Функционал')">4D Функционал</div>
+                <div class="category" onclick="showCategory('5D Функционал')">5D Функционал</div>
+                <div class="category" onclick="showCategory('Пользовательские услуги')">Пользовательские услуги</div>
+                <div class="category" onclick="showCategory('Другое')">Другое</div>
+                <div id="category-content">
+                    <!-- Сюда будут вставляться товары категории -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно выбора продукта -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div id="product-header">
+                <span id="product-title"></span>
+                <button id="product-close-btn" onclick="closeProductModal()">×</button>
+            </div>
+            <div id="product-details"></div>
+            <button id="choose-product-btn" onclick="chooseProduct()">Выбрать товар</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно формы заказа -->
+    <div id="order-form-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeOrderForm()">×</button>
+            <h2>Форма заказа</h2>
+            <form id="order-form" onsubmit="return confirmOrderSubmission()">
+                <input type="text" id="nickname" name="nickname" placeholder="Никнейм в игре:" required>
+                
+                <input type="email" id="email" name="email" placeholder="Почта:" required>
+                
+                <input type="text" id="telegram" name="telegram" placeholder="Телеграм (если есть):">
+                
+                <textarea id="details" name="details" rows="4" placeholder="Подробности по товару:" required></textarea>
+                
+                <input type="hidden" id="product-title-hidden" name="productTitle">
+                <button type="submit">Отправить заказ</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p>Вы действительно хотите отправить заказ?</p>
+            <button id="confirm-btn">Да</button>
+            <button id="cancel-btn">Нет</button>
+        </div>
+    </div>
+
+    <!-- Чат с администрацией -->
+    <div id="chat-icon" onclick="toggleChat()">💬</div>
+    <div id="chat-box">
+        <div id="chat-header">
+            <span>Чат с Поддержкой</span>
+            <button onclick="toggleChat()" id="chat-close-btn">×</button>
+        </div>
+        <div id="chat-body">
+            <div id="chat-messages"></div>
+            <input type="text" id="chat-input" placeholder="Введите сообщение..." onkeydown="sendMessage(event)">
+            <button id="send-message-btn">Отправить сообщение</button>
+        </div>
+    </div>
+
+    <!-- Подключение библиотеки particles.js через CDN -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="particles.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Получаем элемент видео
+        var video = document.getElementById('background-video');
+
+        // Устанавливаем скорость воспроизведения
+        video.playbackRate = 0.1; // Ускорение в 1.5 раза
+    </script>
+</body>
+</html>
